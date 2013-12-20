@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Json schema test</title>
+<script src="js/tv4.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+function check_json(){
+        // Object to validate
+        var jsonStr = document.getElementById("json").value;
+        var schemaStr = document.getElementById("schema").value;
+        var json = eval('(' + jsonStr + ')');
+        var schema = eval('(' + schemaStr + ')');
+      
+        var result = tv4.validate(json, schema);
+        
+         document.getElementById("result").innerHTML = result;
+         document.getElementById("result_error").innerHTML = JSON.stringify(tv4.error, null, 4);
+/*         // Check result
+        if (result.errors.length === 0) {
+            // Success, do something
+            document.getElementById("result").innerHTML = result;
+            // alert("Object is valid");
+        } else {
+            // Failure - extract the errors array 
+            var errorArr = result.errors;
+            var errMsg = "uri : " + errorArr[0].uri + "\nmessage :  " 
+            + errorArr[0].message;
+            document.getElementById("result").innerHTML = errMsg;
+        } */
+}
+</script>
+</head>
+
+<body>
+<button id="check" onclick="check_json();">validate</button>
+<span id="result"></span>
+<br/>
+<label>Error:</label><span id="result_error"></span>
+<table>
+<tr>
+	<th>json</th>
+	<th>schema</th>
+</tr>
+<tr>
+<td>
+<textarea id="json" rows="50" cols="20">
+</textarea>
+</td>
+<td>
+<textarea id="schema" rows="50" cols="150">
+</textarea>
+</td>
+</tr>
+</table>
+</body>
+</html>

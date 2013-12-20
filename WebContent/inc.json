@@ -1,0 +1,134 @@
+{
+    "$schema": "http://json-schema.org/draft-04/hyper-schema#",
+    "title": "Currency API inc request parameter schema",
+    "definitions": {
+        "IncCommReq" : {
+            "type": "object",
+            "required": ["user_id","amount","sign"],
+            "properties": {
+				"user_id": {
+                    "title": "ユーザー ID",
+                    "description": "付与対象のユーザーの ID",
+                    "type": "integer"
+                },
+                "amount": {
+                    "title": "付与額",
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "carrier": {
+                    "title": "carrier",
+                    "description": "基本いらない項目。自動的にuser_idでgame_smart.sp_user_career_ipから検索したもの。",
+                    "type": "string"
+                },
+                "sign": {
+                    "title": "署名",
+                    "description": "requestの項目と秘密鍵を HMAC-SHA1 した署名",
+                    "type": "string"
+                }
+            }
+        },
+        "IncSqwebReq": {
+            "type": "object",
+            "required": ["method","src_id","type","content_type"],
+            "properties": {
+                "method": {
+                    "title": "メソート",
+                    "description": "決済メッソド",
+                    "enum": [ "sp_web" ]
+                },
+                "type": {
+                    "title": "通貨種別",
+                    "description": "1: Coin, 3: VC",
+                    "enum": [ 1 ]
+                },
+                "content_type": {
+                    "title": "オペレーション種別",
+                    "description": "3: 事務局付与, 4: キャンペーン付与",
+                    "enum": [3]
+                },
+                "src_id": {
+                    "title": "運用処理タイプ",
+                    "description": "3: 運用対応（返金・お詫びなど）",
+                    "enum": [ 3 ]
+                }
+            },
+            "allOf": [
+                { "$ref": "#/definitions/IncCommReq" }
+            ]
+        },
+        "IncGameCoinReq": {
+            "type": "object",
+            "required": ["method","app_id","device_id","type","content_type"],
+            "properties": {
+                "method": {
+                    "title": "メソート",
+                    "description": "決済メッソド",
+                    "enum": [ "game" ]
+                },
+                "app_id": {
+                    "title": "アプリケーション ID",
+                    "description": "これらのapp_idから、coin付与のリクエストを受け取る可能",
+                    "enum": [ TODO:one pieceのapp_id ]
+                },
+                "device_id": {
+                    "title": "デバイスid",
+                    "description": "1:FP, 2:PC, 4:SP, 8:IOS, 16:Android",
+                    "enum": [1,2,4,8,16]
+                },
+                "type": {
+                    "title": "通貨種別",
+                    "description": "1: Coin, 3: VC",
+                    "enum": [ 1 ]
+                },
+                "content_type": {
+                    "title": "オペレーション種別  TODO:事推にも要確認",
+                    "description": "3: 事務局付与, 4: キャンペーン付与",
+                    "enum": [4]
+                },
+                "src_id": {
+                    "title": "処理タイプ小分類  TODO:事推にも要確認",
+                    "description": "2:新設",
+                    "enum": [ 2 ]
+                }
+            },
+            "allOf": [
+                { "$ref": "#/definitions/IncCommReq" }
+            ]
+        },
+        "IncIapreq": {
+            "type": "object",
+            "required": ["app_id","type","content_type"],
+            "properties": {
+                "method": {
+                    "title": "メソート",
+                    "description": "決済メッソド",
+                    "enum": [ "iap" ]
+                },
+                "app_id": {
+                    "title": "アプリケーション ID",
+                    "description": "付与を行うアプリケーションの ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "title": "通貨種別",
+                    "description": "1: Coin, 3: VC",
+                    "enum": [ 3 ]
+                },
+                "content_type": {
+                    "title": "オペレーション種別",
+                    "description": "3: 事務局付与, 4: キャンペーン付与",
+                    "enum": [3, 4]
+                }
+            },
+            "allOf": [
+                { "$ref": "#/definitions/IncCommReq" }
+            ]
+        },
+        "oneOf": [
+            { "$ref": "#/defintions/IncSqwebReq" },
+            { "$ref": "#/defintions/IncGameCoinReq" },
+            { "$ref": "#/defintions/IncIapreq" }
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//WebContent/dec.json=UTF-8
+encoding//WebContent/inc.json=UTF-8
+encoding//WebContent/index.jsp=UTF-8
+encoding//WebContent/json_schema_v4.html=UTF-8
+encoding//WebContent/upload_ifr.jsp=UTF-8
+encoding//src/FileOperator/Download.java=UTF-8
+encoding//src/FileOperator/Upload.java=UTF-8
+encoding//src/FileOperator/UploadIfr.java=UTF-8
+encoding//src/Linkage/Linkage.java=UTF-8
+encoding//src/Linkage/Util.java=UTF-8
+encoding//src/json_schema.java=UTF-8

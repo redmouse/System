@@ -1,0 +1,154 @@
+{
+    "$schema": "http://json-schema.org/draft-04/hyper-schema#",
+    "title": "Currency API dec request parameter schema",
+    "definitions": {
+        "CurrencyDecStandardRequestParameter" : {
+            "type": "object",
+            "required": ["user_id","app_id","amount","sign"],
+            "properties": {
+				"user_id": {
+                    "title": "ユーザー ID",
+                    "description": "付与対象のユーザーの ID",
+                    "type": "integer"
+                },
+                "app_id": {
+                    "title": "アプリケーション ID",
+                    "description": "消費・没収を行うアプリケーションの ID",
+                    "type": "integer"
+                },
+                "amount": {
+                    "title": "消費・没収額",
+                    "type": "integer",
+                    "maximum": -1
+                },
+                "carrier": {
+                    "title": "carrier",
+                    "description": "基本いらない項目。自動的にuser_idでgame_smart.sp_user_career_ipから検索したもの。",
+                    "type": "string"
+                },
+                "market_type": {
+                    "title": "リクエスト元アプリケーションのマーケット種別",
+                    "description": "mbga: 野良, amkt: Google Play, app_store: App Store",
+                    "enum": ["mbga", "amkt", "app_store"]
+                },
+                "sign": {
+                    "title": "署名",
+                    "description": "user_id, app_id, type, amount から生成される文字列に対して app_id に紐づく consumer_secret をキーとして HMAC-SHA1 した署名",
+                    "type": "string"
+                }
+            }
+        },
+        "CurrencyDecSpWebRequestParameter": {
+            "type": "object",
+            "required": ["method","type","content_type","paymant_id"],
+            "properties": {
+                "method": {
+                    "title": "メソート",
+                    "description": "決済メッソド",
+                    "enum": [ "sp_web" ]
+                },
+                "type": {
+                    "title": "通貨種別",
+                    "description": "1: Coin, 3: VC",
+                    "enum": [ 1 ]
+                },
+                "content_type": {
+                    "title": "オペレーション種別",
+                    "description": "2: アイテム購入, 3: 運用没収",
+                    "enum": [2]
+                },
+                "paymant_id": {
+                    "title": "アイテム決済トランザクション ID",
+                    "description": "payment.id",
+                    "type": "integer"
+                }
+            },
+            "allOf": [
+                { "$ref": "#/definitions/CurrencyDecStandardRequestParameter" }
+            ]
+        },
+        "DecContentType_2": {
+            "type": "object",
+            "required": ["content_type","paymant_id"],
+            "properties": {
+                "content_type": {
+                    "title": "オペレーション種別",
+                    "description": "2: アイテム購入, 3: 運用没収",
+                    "enum": [2]
+                },
+                "paymant_id": {
+                    "title": "アイテム決済トランザクション ID",
+                    "description": "payment.id",
+                    "type": "integer"
+                }
+            }
+        },
+        "DecContentType_3": {
+            "type": "object",
+            "required": ["content_type"],
+            "properties": {
+                "content_type": {
+                    "title": "オペレーション種別",
+                    "description": "2: アイテム購入, 3: 運用没収",
+                    "enum": [3]
+                },
+                "paymant_id": {
+                    "title": "アイテム決済トランザクション ID",
+                    "description": "payment.id",
+                    "type": "integer"
+                }
+            }
+        },
+         "CurrencyDecIapRequestParameter": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+                "method": {
+                    "title": "メソート",
+                    "description": "決済メッソド",
+                    "enum": [ "iap" ]
+                },
+                "type": {
+                    "title": "通貨種別",
+                    "description": "1: Coin, 3: VC",
+                    "enum": [ 3 ]
+                }
+            },
+            "allOf": [
+                { "$ref": "#/definitions/CurrencyDecStandardRequestParameter" }
+            ],
+            "oneOf": [
+                { "$ref": "#/definitions/DecContentType_2" },
+                { "$ref": "#/definitions/DecContentType_3" }
+            ]
+        },
+        "CurrencyDecGoogleCheckoutRequestParameter": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+                "method": {
+                    "title": "メソート",
+                    "description": "決済メッソド",
+                    "enum": [ "google_checkout", "google_checkout_v3" ]
+                },
+                "type": {
+                    "title": "通貨種別",
+                    "description": "1: Coin, 3: VC",
+                    "enum": [ 1 ]
+                }
+            },
+            "allOf": [
+                { "$ref": "#/definitions/CurrencyDecStandardRequestParameter" }
+            ],
+            "oneOf": [
+                { "$ref": "#/definitions/DecContentType_2" },
+                { "$ref": "#/definitions/DecContentType_3" }
+            ]
+        }, 
+        "oneOf": [
+            { "$ref": "#/defintions/CurrencyDecSpWebRequestParameter" },
+            { "$ref": "#/defintions/CurrencyDecIapRequestParameter" },
+            { "$ref": "#/defintions/CurrencyDecGoogleCheckoutRequestParameter" }
+        ]
+    }
+}
