@@ -13,7 +13,6 @@ function check_json(){
         var schema = eval('(' + schemaStr + ')');
       
         var result = tv4.validate(json, schema);
-        
          document.getElementById("result").innerHTML = result;
          document.getElementById("result_error").innerHTML = JSON.stringify(tv4.error, null, 4);
 /*         // Check result
