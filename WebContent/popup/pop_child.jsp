@@ -19,7 +19,7 @@ function return_value(){
 
 </script>
 
-<body onblur="self.focus();">
+<body>
 
 <form> 
   <textarea id="child_textarea" rows="5" cols="20"></textarea>
